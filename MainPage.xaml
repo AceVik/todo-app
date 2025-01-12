@@ -1,0 +1,59 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="TodoApp.MainPage"
+             xmlns:viewmodels="clr-namespace:TodoApp.ViewModels"
+             xmlns:models="clr-namespace:TodoApp.Models"
+             Title="ToDo List">
+    <VerticalStackLayout Padding="20">
+        <HorizontalStackLayout Spacing="10">
+            <Entry Text="{Binding NewTitle}" 
+                   Placeholder="Dein neuer Task" 
+                   WidthRequest="200" />
+            <CheckBox IsChecked="{Binding NewIsCompleted}" />
+            <Label Text="Erledigt?" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout Spacing="10">
+            <Button Text="Hinzufügen" Command="{Binding AddCommand}" />
+            <Button Text="Aktualisieren" Command="{Binding RefreshCommand}" />
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout Spacing="10">
+            <Picker
+                Title="Filter auswählen"
+                ItemsSource="{Binding FilterOptions}"
+                SelectedItem="{Binding SelectedFilterOption, Mode=TwoWay}"
+                ItemDisplayBinding="{Binding DisplayText}" 
+                Margin="0,10,0,15"
+                HorizontalOptions="FillAndExpand" 
+                WidthRequest="200" />
+        </HorizontalStackLayout>
+
+        <CollectionView ItemsSource="{Binding ToDoItems}" Margin="0,20,0,0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:ToDoItem">
+                    <Grid Padding="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <CheckBox IsChecked="{Binding IsCompleted}"
+                                  VerticalOptions="Center"
+                                  CheckedChanged="CheckBox_CheckedChanged" />
+
+                        <Label Text="{Binding Title}"
+                               Grid.Column="1"
+                               VerticalOptions="Center" />
+
+                        <Button Text="Löschen"
+                                Grid.Column="2"
+                                Clicked="DeleteButton_Clicked" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </VerticalStackLayout>
+</ContentPage>
